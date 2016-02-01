@@ -1,0 +1,18 @@
+
+Current Version:
+    more efficient and accurate word processing:
+        1)merge singular and plural words
+        2)merge verb and adverbs
+            can be sloved by NTLK WordNetLemmatizer, but kinda slow
+
+Future features:
+    Making this as a Restful API using Python/Flask.
+        currently working on this one, 60% done.
+
+    Customizable color, selected color scheme.
+
+    Smart auto generated image outline for any given keywords or sites.
+        via OpenCV, Google Image Search?
+        made a crawler for Google Image search for given words, but Image processing is whole different beast...
+
+
