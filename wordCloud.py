@@ -9,7 +9,7 @@ import jieba
 import numpy as np
 import matplotlib.pyplot as plt
 import requests
-from wordcloud import WordCloud, STOPWORDS
+from wordcloud import WordCloud
 
 
 # from nltk.corpus import stopwords
@@ -18,11 +18,12 @@ stop_words_list = {}
 
 
 # filter with stop words and get the words frequency
+# does not filter both English and Chinese due to performance consideration
 def get_sorted_word_list(content, filter_size):
     hist = {}
 
     # get the list of stop words for filter
-    # by default change to english, can change to 'cn'
+    # by default set to english, can change to 'cn'
     en_stop_words = get_stop_words_list('en')
 
     for word in jieba.cut(content):
@@ -38,14 +39,12 @@ def get_sorted_word_list(content, filter_size):
 
 
 # make word cloud given content of text
+# core part of word cloud visualization
 def make_word_cloud(content):
     # read the mask image
-    # not quite sure how this mask thing works tho
     d = path.dirname(__file__)
     alice_mask = np.array(Image.open(path.join(d, "mask/terran.jpg")))
 
-    # can a transparent png file work too?
-    # can background be other color or set of colors?
     # font__dir = '/var/www/FlaskApp/FlaskApp/word_cloud_min/_fonts/lth.ttf'
     # font__dir = 'C:\Users\zjsep_000\PycharmProjects\myDrone\word_cloud_min\_fonts\lth.ttf'
     # font__dir = '_fonts/lth.ttf'
@@ -53,8 +52,8 @@ def make_word_cloud(content):
     wc = WordCloud(background_color="white", max_words=1000, mask=alice_mask)
 
     # give the absolute dir for font ttf file
-    # wc.font_path = 'C:\Users\JI\Documents\GitHub\PycharmProjects\myDrone\word_cloud\_fonts\RockwellStd-Light.otf'
-    wc.font_path = 'C:\Users\zjsep_000\PycharmProjects\myDrone\word_cloud_min\_fonts\lth.ttf'
+    wc.font_path = 'C:\Users\JI\Documents\GitHub\PycharmProjects\myDrone\word_cloud\_fonts\lth.ttf'
+    # wc.font_path = 'C:\Users\zjsep_000\PycharmProjects\myDrone\word_cloud_min\_fonts\lth.ttf'
 
     # wc.font_path = '_fonts/lth.ttf'
     # wc.font_path = '/var/www/FlaskApp/FlaskApp/word_cloud_min/_fonts/lth.ttf'
@@ -68,7 +67,7 @@ def make_word_cloud(content):
 
     # store to file
     wc.to_file(path.join(d, "img/output.png"))
-    # store to static foder
+    # store to static foder in web server
     # wc.to_file(path.join(d, "../static/output.png"))
 
     # show
@@ -80,6 +79,7 @@ def make_word_cloud(content):
     plt.show()
 
 
+# return stop words list from local file for Chinese and English and use accordingly
 def get_stop_words_list(lan):
     # if global var exist
     if stop_words_list:
@@ -101,6 +101,9 @@ def get_stop_words_list(lan):
             return {}
 
 
+# generate word cloud for local files
+# filter words that has length less than 2
+
 def word_cloud_local_file(filename):
     d = path.dirname(__file__)
     # Read the whole text.
@@ -110,6 +113,7 @@ def word_cloud_local_file(filename):
     make_word_cloud(content)
 
 
+# helper function that return BeautifulSoup object by given url
 def get_soup_by_url(url, parser=None):
     sourceCode = requests.get(url)
     plainText = sourceCode.text
@@ -119,14 +123,6 @@ def get_soup_by_url(url, parser=None):
     else:
         soup = BeautifulSoup(plainText, str(parser))
     return soup
-
-
-def visible(element):
-    if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
-        return False
-    elif re.match('<!--.*-->', str(element.encode('utf-8'))):
-        return False
-    return True
 
 
 # filter out non-alphanumerical chars and scripts in html page
@@ -162,7 +158,10 @@ def make_reddit_word_cloud(subName, subPage):
     word_cloud_local_file('reddit_text.txt')
 
 
+# Integrated with tweepy and Twitter API
+# by default read 77 tweets
 def make_twitter_word_cloud(keyword):
+    # discard previously crawled files
     fileName = 'twitter_text.csv'
     if os.path.isfile(fileName):
         os.remove(fileName)

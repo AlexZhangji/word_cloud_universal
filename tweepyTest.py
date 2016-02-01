@@ -11,7 +11,7 @@ asecret = 'GzrSl4QYXxyT5UoqKp11xn8EOVcVKsFIB90bV0VwzMbX9'
 class listener(StreamListener):
     # change the number of tweet when
     tweetCount = 0
-    stopAt = 3333
+    stopAt = 77
 
     def on_data(self, data):
 
