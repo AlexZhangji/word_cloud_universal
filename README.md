@@ -6,17 +6,13 @@ This is a personal side project that generate word cloud visualization based on 
   - Customized crawler for Twitter and Reddit.
   - Generating word cloud with customizable outline.
 
-Markdown is a lightweight markup language based on the formatting conventions that people naturally use in email.  As [John Gruber] writes on the [Markdown site][df1]
+*Most of this project was done in the first two months when I was learning Python.  So it can be rough around the edges.
 
-> The overriding design goal for Markdown's
-> formatting syntax is to make it as readable
-> as possible. The idea is that a
-> Markdown-formatted document should be
-> publishable as-is, as plain text, without
-> looking like it's been marked up with tags
-> or formatting instructions.
+###Sample Results
+![sample_1](https://github.com/AlexZhangji/word_cloud_universal/blob/dev_/img/sample_1.png?raw=true)
 
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
+![sample_2](https://github.com/AlexZhangji/word_cloud_universal/blob/dev_/img/sample_2.png?raw=true)
+
 
 ### Version
 0.7.1
@@ -25,26 +21,70 @@ This text you see here is *actually* written in Markdown! To get a feel for Mark
 
 Word Cloud Universal uses a number of open source projects to work properly:
 
-* [wordcloud] - HTML enhanced for web apps!
-* [PIL] - awesome web-based text editor
-* [Tweepy] - a super fast port of Markdown to JavaScript
-* [requests] - great UI boilerplate for modern web apps
-* [BeautifulSoup] - evented I/O for the backend
-* [jieba] - evented I/O for the backend
+* [wordcloud] -Word cloud visualization using PIL Matplotlib
+* [Tweepy] - Twitter for Python!
+* [requests] - Python HTTP Requests for Humans™
+* [BeautifulSoup] - Pulling data out of HTML and XML 
+* [jieba] - Chinese text segmentation
 
 
 ### Set up
+Set "wc.font_path " as absolute directory file path to font file:
 
-ABCDEFG
+    wc.font_path = 'C:\GitHub\word_cloud\_fonts\lth.ttf'
 
-### Development
+*Font files can be found under _fonts folder.
+*Compatible with various fonts.
 
+
+Set different mask in place "mask" or  global variable"mask_img":
+
+    mask = np.array(Image.open(path.join(d, mask_img)))
+
+*Masks templates can be found under mask folder.
+*Compatible with various masks.
+![*Some mask templates](https://github.com/AlexZhangji/word_cloud_universal/blob/dev_/img/masks.png?raw=true)
+
+
+###Run
+
+In wordCloud.py:
+
+for Reddit: 
+  
+    # generate from reddit forum
+    # by default read 10 pages of recent posts. 
+    numPage = 10
+    subName = 'soccer' 
+    make_reddit_word_cloud(subName , numPage)
+
+
+for Twitter:
+
+    # word cloud from twitter feed given any keyword 
+    # by default read 77 tweet, since twitter API is kinda slow and 77 is a fantastic number.
+    keyword = 'barcelona' 
+    make_twitter_word_cloud(keyword)
+
+
+for arbitrary sites:
+
+    # generate from url 
+    url = 'https://en.wikipedia.org/wiki/The_Library_of_Babel' 
+    word_cloud_url(url)
+
+
+for local files:
+
+    # generate from local text file 
+    word_cloud_local_file('resources/got.txt')
 
 ### Todos
 
  - Making this as a Restful API using Python/Flask.(60% done)
+ - Intelligent and more general useful forum crawler. 
  - Customizable color, selected color scheme.
- - Smart auto generated image outline for any given keywords or sites.(via OpenCV, Google Image Search)
+ - Auto generated image outline for any given keywords or sites.
 
 License
 ----
@@ -55,14 +95,14 @@ MIT
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 
-   [dill]: <https://github.com/joemccann/dillinger>
+   [wordcloud]: <https://github.com/joemccann/dillinger>
    [git-repo-url]: <https://github.com/joemccann/dillinger.git>
-   [john gruber]: <http://daringfireball.net>
-   [@thomasfuchs]: <http://twitter.com/thomasfuchs>
-   [df1]: <http://daringfireball.net/projects/markdown/>
-   [marked]: <https://github.com/chjj/marked>
+   [wordcloud]: <https://github.com/amueller/word_cloud>
+   [requests]: <https://github.com/kennethreitz/requests>
+   [BeautifulSoup]: <http://www.crummy.com/software/BeautifulSoup/>
+   [jieba]: <https://github.com/fxsjy/jieba>
    [Ace Editor]: <http://ace.ajax.org>
-   [node.js]: <http://nodejs.org>
+   [Tweepy]: <https://github.com/tweepy/tweepy>
    [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
    [keymaster.js]: <https://github.com/madrobby/keymaster>
    [jQuery]: <http://jquery.com>

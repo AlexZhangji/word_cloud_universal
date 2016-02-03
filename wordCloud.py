@@ -186,7 +186,7 @@ make_reddit_word_cloud('soccer', numPage)
 
 
 # generate from url
-# url = 'http://us.blizzard.com/en-us/company/careers/posting.html?id=15000YC'
+# url = 'https://en.wikipedia.org/wiki/The_Library_of_Babel'
 # word_cloud_url(url)
 
 
