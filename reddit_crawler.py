@@ -48,7 +48,7 @@ def get_subreddit_entries(subName, pageNum):
 
                 # get the list of comments
                 # mega_comment_list += get_text_from_post(link)
-                f.write("\n".join(get_text_from_post(link)))
+                f.write("\n".join(get_text_from_post_with_filter(link, ['barcelona', 'messi', 'barca'])))
 
         # get the url for next page and update the url
         next_btn = soup.find("div", class_='nav-buttons')
@@ -73,6 +73,27 @@ def get_subreddit_entries(subName, pageNum):
         # return mega_comment_list
 
 
+# only extract post with certain words
+# filterList is list of words
+def get_text_from_post_with_filter(url, filterList=None):
+    list_comment = []
+    # url = 'https://www.reddit.com/r/soccer/comments/3u9ho3/dani_carvajal_goal_vs_shakhtar_donetsk_03/'
+    soup = get_soup_by_url(url)
+    for post in soup.findAll("div", class_="usertext-body"):
+        if len(post.text):
+            # get rid of static msg in every reddit post
+            if not post.find('blockquote'):
+                # parse comment so that it only contains alphabet and numeric chars
+                content = " ".join(re.findall("[a-zA-Z0-9]+", post.text))
+                for filter_word in filterList:
+                    if filter_word in content.lower():
+                        list_comment.append(content.encode('utf-8'))
+                        print(content.encode('utf-8'))
+                        # only break this chain
+                        break
+    return list_comment
+
+
 def get_text_from_post(url):
     list_comment = []
     # url = 'https://www.reddit.com/r/soccer/comments/3u9ho3/dani_carvajal_goal_vs_shakhtar_donetsk_03/'
@@ -85,8 +106,6 @@ def get_text_from_post(url):
                 content = " ".join(re.findall("[a-zA-Z0-9]+", post.text))
                 list_comment.append(content.encode('utf-8'))
     return list_comment
-
-
 
 # estimate time
 # start_time = time.time()

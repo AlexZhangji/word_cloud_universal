@@ -15,6 +15,8 @@ from wordcloud import WordCloud
 # from nltk.corpus import stopwords
 
 stop_words_list = {}
+mask_img = "mask/terran.jpg"
+abs_font_dir = 'C:\Users\JI\Documents\GitHub\PycharmProjects\myDrone\word_cloud\_fonts\lth.ttf'
 
 
 # filter with stop words and get the words frequency
@@ -43,8 +45,8 @@ def get_sorted_word_list(content, filter_size):
 def make_word_cloud(content):
     # read the mask image
     d = path.dirname(__file__)
-    alice_mask = np.array(Image.open(path.join(d, "mask/terran.jpg")))
-
+    # alice_mask = np.array(Image.open(path.join(d, "mask/terran.jpg")))
+    alice_mask = np.array(Image.open(path.join(d, mask_img)))
     # font__dir = '/var/www/FlaskApp/FlaskApp/word_cloud_min/_fonts/lth.ttf'
     # font__dir = 'C:\Users\zjsep_000\PycharmProjects\myDrone\word_cloud_min\_fonts\lth.ttf'
     # font__dir = '_fonts/lth.ttf'
@@ -52,7 +54,8 @@ def make_word_cloud(content):
     wc = WordCloud(background_color="white", max_words=1000, mask=alice_mask)
 
     # give the absolute dir for font ttf file
-    wc.font_path = 'C:\Users\JI\Documents\GitHub\PycharmProjects\myDrone\word_cloud\_fonts\lth.ttf'
+    # wc.font_path = 'C:\Users\JI\Documents\GitHub\PycharmProjects\myDrone\word_cloud\_fonts\lth.ttf'
+    wc.font_path = abs_font_dir
     # wc.font_path = 'C:\Users\zjsep_000\PycharmProjects\myDrone\word_cloud_min\_fonts\lth.ttf'
 
     # wc.font_path = '_fonts/lth.ttf'
@@ -171,9 +174,14 @@ def make_twitter_word_cloud(keyword):
     word_cloud_local_file(fileName)
 
 
+# change mask and font here
+# mask_img = "mask/terran.jpg"
+# abs_font_dir = 'C:\Users\JI\Documents\GitHub\PycharmProjects\myDrone\word_cloud\_fonts\lth.ttf'
+
+
 # generate from reddit forum
 # by default read 10 pages of recent posts.
-numPage = 10
+numPage = 20
 make_reddit_word_cloud('soccer', numPage)
 
 
