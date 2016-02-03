@@ -46,12 +46,12 @@ def make_word_cloud(content):
     # read the mask image
     d = path.dirname(__file__)
     # alice_mask = np.array(Image.open(path.join(d, "mask/terran.jpg")))
-    alice_mask = np.array(Image.open(path.join(d, mask_img)))
+    mask = np.array(Image.open(path.join(d, mask_img)))
     # font__dir = '/var/www/FlaskApp/FlaskApp/word_cloud_min/_fonts/lth.ttf'
     # font__dir = 'C:\Users\zjsep_000\PycharmProjects\myDrone\word_cloud_min\_fonts\lth.ttf'
     # font__dir = '_fonts/lth.ttf'
 
-    wc = WordCloud(background_color="white", max_words=1000, mask=alice_mask)
+    wc = WordCloud(background_color="white", max_words=1000, mask=mask)
 
     # give the absolute dir for font ttf file
     # wc.font_path = 'C:\Users\JI\Documents\GitHub\PycharmProjects\myDrone\word_cloud\_fonts\lth.ttf'
@@ -77,7 +77,7 @@ def make_word_cloud(content):
     plt.imshow(wc)
     plt.axis("off")
     plt.figure()
-    plt.imshow(alice_mask, cmap=plt.cm.gray)
+    plt.imshow(mask, cmap=plt.cm.gray)
     plt.axis("off")
     plt.show()
 

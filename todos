@@ -16,3 +16,8 @@ Future features:
         made a crawler for Google Image search for given words, but Image processing is whole different beast...
 
 
+bug:
+problem on r/starcraft page 35,
+"AttributeError
+error 'NoneType' object has no attribute 'get'
+Why do people pause the game before losing "
