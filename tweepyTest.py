@@ -1,11 +1,25 @@
-import time
 from tweepy import OAuthHandler, StreamListener
 from tweepy import Stream
 
+
+# input your twitter Dev API keys here
 ckey = ''
 csecret = ''
 atoken = ''
 asecret = ''
+
+# or read in local api keys, and add api_keys.txt to .gitigonre
+try:
+    with open('api_keys.txt') as f:
+        keys = f.read().splitlines()
+        print(keys)
+        ckey = keys[0]
+        csecret = keys[1]
+        atoken = keys[2]
+        asecret = keys[3]
+
+except Exception as e:
+    print(str(e))
 
 
 class listener(StreamListener):
