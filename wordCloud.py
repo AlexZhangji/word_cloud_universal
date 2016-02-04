@@ -181,7 +181,7 @@ def make_twitter_word_cloud(keyword):
 
 # generate from reddit forum
 # by default read 10 pages of recent posts.
-numPage = 20
+numPage = 10
 make_reddit_word_cloud('soccer', numPage)
 
 

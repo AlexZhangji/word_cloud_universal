@@ -48,16 +48,15 @@ def get_subreddit_entries(subName, pageNum):
                 print('error ' + str(e))
                 print(title)
 
+            if int(num_comment) > 30:
+                print(title + '\n' + str(link) + '\n' + 'comments:' + str(num_comment) + '\n')
 
-                # if int(num_comment) > 30:
-                #     print(title + '\n' + str(link) + '\n' + 'comments:' + str(num_comment) + '\n')
-                #
-                #     # get the list of comments
-                #     # mega_comment_list += get_text_from_post(link)
-                #     # f.write("\n".join(get_text_from_post_with_filter(link, ['barcelona', 'messi', 'barca'])))
-                #     comments = get_text_from_post(link)
-                #     for comment in comments:
-                #         f.write("\n" + str(comment))
+                # get the list of comments
+                # mega_comment_list += get_text_from_post(link)
+                # f.write("\n".join(get_text_from_post_with_filter(link, ['barcelona', 'messi', 'barca'])))
+                comments = get_text_from_post(link)
+                for comment in comments:
+                    f.write("\n" + str(comment))
 
 
         # get the url for next page and update the url
@@ -126,9 +125,9 @@ def get_text_from_post(url):
 
 
 # estimate time
-start_time = time.time()
-get_subreddit_entries('starcraft', 60)
+# start_time = time.time()
+# get_subreddit_entries('starcraft', 60)
 
 # url = 'https://www.reddit.com/r/soccer/comments/3u9ho3/dani_carvajal_goal_vs_shakhtar_donetsk_03/'
 # print(get_text_from_post(url))
-print("--- %s seconds ---" % (time.time() - start_time))
+# print("--- %s seconds ---" % (time.time() - start_time))
