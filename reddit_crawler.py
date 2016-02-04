@@ -37,18 +37,27 @@ def get_subreddit_entries(subName, pageNum):
             title = post.contents[0].find('a').text
             title = title.split('(')[0]
             title = re.sub(r'\W+', ' ', title).encode('utf-8')
-
-            link = (post.contents[2]).find('a').get('href').encode('utf-8')
             try:
+                link = (post.contents[2]).find('a').get('href').encode('utf-8')
                 num_comment = re.findall(r'\d+', post.contents[2].text)[0].encode('utf-8')
             except IndexError:
                 num_comment = '0'
-            if int(num_comment) > 40:
+
+            except AttributeError as e:
+                print('AttributeError happens to reading post')
+                print('error ' + str(e))
+                print(title)
+
+            if int(num_comment) > 30:
                 print(title + '\n' + str(link) + '\n' + 'comments:' + str(num_comment) + '\n')
 
                 # get the list of comments
                 # mega_comment_list += get_text_from_post(link)
-                f.write("\n".join(get_text_from_post(link)))
+                # f.write("\n".join(get_text_from_post_with_filter(link, ['barcelona', 'messi', 'barca'])))
+                comments = get_text_from_post(link)
+                for comment in comments:
+                    f.write("\n" + str(comment))
+
 
         # get the url for next page and update the url
         next_btn = soup.find("div", class_='nav-buttons')
@@ -63,6 +72,13 @@ def get_subreddit_entries(subName, pageNum):
             for in_text in next_btn.contents[0].findAll('a'):
                 if 'next' in in_text.text:
                     next_page_url = in_text.get('href').encode('utf-8')
+                else:
+                    print('you have reached the bottom of rabbit hole.')
+                    return False
+
+        if next_page_url == url:
+            print('you have reached the bottom of rabbit hole.')
+            return False
 
         page_counter += 1
         print('\npage:' + str(page_counter) + ' ' + next_page_url + '\n')
@@ -71,6 +87,27 @@ def get_subreddit_entries(subName, pageNum):
         time.sleep(1)
 
         # return mega_comment_list
+
+
+# only extract post with certain words
+# filterList is list of words
+def get_text_from_post_with_filter(url, filterList=None):
+    list_comment = []
+    # url = 'https://www.reddit.com/r/soccer/comments/3u9ho3/dani_carvajal_goal_vs_shakhtar_donetsk_03/'
+    soup = get_soup_by_url(url)
+    for post in soup.findAll("div", class_="usertext-body"):
+        if len(post.text):
+            # get rid of static msg in every reddit post
+            if not post.find('blockquote'):
+                # parse comment so that it only contains alphabet and numeric chars
+                content = " ".join(re.findall("[a-zA-Z0-9]+", post.text))
+                for filter_word in filterList:
+                    if filter_word in content.lower():
+                        list_comment.append(content.encode('utf-8'))
+                        print(content.encode('utf-8'))
+                        # only break this chain
+                        break
+    return list_comment
 
 
 def get_text_from_post(url):
@@ -87,10 +124,9 @@ def get_text_from_post(url):
     return list_comment
 
 
-
 # estimate time
 # start_time = time.time()
-# get_subreddit_entries('starcraft', 37)
+# get_subreddit_entries('starcraft', 60)
 
 # url = 'https://www.reddit.com/r/soccer/comments/3u9ho3/dani_carvajal_goal_vs_shakhtar_donetsk_03/'
 # print(get_text_from_post(url))
