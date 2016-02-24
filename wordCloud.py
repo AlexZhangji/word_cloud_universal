@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import requests
 from wordcloud import WordCloud
 
-
 # from nltk.corpus import stopwords
 
 stop_words_list = {}
@@ -144,7 +143,9 @@ def clean_html(url):
     # drop blank lines
     text = '\n'.join(chunk for chunk in chunks if chunk)
     # strip non-alphanumeric chars
-    text = re.sub(r'\W+', ' ', text)
+    # include Chinese characters
+    text = re.sub(r'\W+\u4e00-\u9fa5', ' ', text)
+    # text = re.sub(r'\W+', ' ', text)
     return text
 
 
